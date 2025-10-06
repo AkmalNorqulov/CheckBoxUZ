@@ -123,6 +123,17 @@ header h1 {
 .task span {
     flex-grow: 1;
     font-size: 16px;
+    cursor: pointer;
+}
+
+.task .edit-input {
+    flex-grow: 1;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1px 5px;
+    outline: none;
 }
 
 .task .delete-btn {
