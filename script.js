@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const taskText = document.createElement('span');
             taskText.textContent = task.text;
+            taskText.addEventListener('click', () => editTask(index, taskItem));
 
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'delete-btn';
@@ -49,6 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTasks();
     };
 
+    const updateTask = (index, newText) => {
+        tasks[index].text = newText;
+        saveTasks();
+        renderTasks();
+    };
+
     const toggleCompleted = (index) => {
         tasks[index].completed = !tasks[index].completed;
         saveTasks();
@@ -65,6 +72,37 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks = tasks.filter(task => !task.completed);
         saveTasks();
         renderTasks();
+    };
+
+    const editTask = (index, taskItem) => {
+        const taskText = taskItem.querySelector('span');
+        const currentText = tasks[index].text;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = currentText;
+        input.className = 'edit-input';
+
+        taskItem.replaceChild(input, taskText);
+        input.focus();
+
+        const save = () => {
+            const newText = input.value.trim();
+            if (newText && newText !== currentText) {
+                updateTask(index, newText);
+            } else {
+                taskItem.replaceChild(taskText, input);
+            }
+        };
+
+        input.addEventListener('blur', save);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                save();
+            } else if (e.key === 'Escape') {
+                taskItem.replaceChild(taskText, input);
+            }
+        });
     };
 
     taskForm.addEventListener('submit', (e) => {
